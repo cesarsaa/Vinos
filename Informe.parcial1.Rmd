@@ -134,6 +134,7 @@ G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
 ```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
 grid.arrange(G2,G3, ncol= 2)
 ```
+A partir de los graficos anteriores se observa como en la base de datos vinos se encuentra una mayor concentración en alcoholes bajos, esto es vinos con un nivel de alcohol inferior a 12 y resultados de calidad inferior a 6.
 
 ## Modelo con variable indicadora y dicotómica
 
@@ -150,4 +151,7 @@ summary(modelo.logit)
 De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas, esto es valores-p de <3.05e-06 y 0.0327 respectivamente.
 
 En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija (0.1029), está positivamente relacionada con el logaritmo del odds ratio de la CalidadAB, la cual aumentaría la calidad en 0.1029 unidades por cada unidad que aumenta la puntuación en el acidez fija.
+
+
+
 
