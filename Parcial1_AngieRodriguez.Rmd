@@ -124,15 +124,9 @@ muestra <- Datos %>% sample_n(size=n,replace=FALSE)
 muestra
 ```
 
-
 ### Variable indicadora: alcoholAB
 
-Se convierte la variable "alcohol" en una variable indicadora con dos niveles: "bajo" y "alto", esta nueva variable se denomina: "alcoholAB". Para dicha transformación se realiza el siguiente procedimiento:
-
-
-## Variables dicotomica: calidadAB
-
-Se convierte la variable calidad (quality) en una variable dicotómica y se denomina "calidadAB". Se forma un grupo con los vinos que tienen calidades 7 y 8 y otro con los demás vinos.
+Se convierte la variable "alcohol" en una variable indicadora con dos niveles: "bajo" y "alto", esta nueva variable se denomina: "alcoholAB".
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
 # Variable indicadora alcoholAB
@@ -142,6 +136,10 @@ alcoholAB[muestra$alcohol >= 12] <- "Alto"
 alcoholAB <- as.factor(alcoholAB)
 table(alcoholAB)
 ```
+
+## Variables dicotomica: calidadAB
+
+Se convierte la variable "calidad" (quality) en una variable dicotómica y se denomina "calidadAB". Se forma un grupo con los vinos que tienen calidades 7 y 8 y otro con los demás vinos.
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
 # Variable indicadora quality
@@ -155,10 +153,7 @@ table(calidadAB)
 
 # Modelo logístico con variable indicadora
 
-Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, como la variable de respuesta "calidadAB"es una variable dicotómica especificamos el argumento family = binomial.
-
-Ajuste un modelo lineal generalizado usando como respuesta la variable calidadAB
-y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB".
+Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, se ajusta un modelo lineal generalizado usando como respuesta la variable calidadAB y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB". Además, como la variable de respuesta "calidadAB"es una variable dicotómica especificamos el argumento family = binomial.
 
 $$calidadAB= Acidez fija+AlcoholAB +Acidez fija*AlcoholAB$$
 
