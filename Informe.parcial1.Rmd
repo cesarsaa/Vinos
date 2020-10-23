@@ -1,5 +1,5 @@
 ---
-title: 'Parcial 1: Modelos lienales generales y no paramétricos'
+title: 'Parcial 1: Modelos lineales generales y no paramétricos'
 author: "Cesar A. Saavedra Vanegas"
 date: "10/23/2020"
 output: pdf_document
@@ -94,6 +94,8 @@ Como primera medida, se realiza un gráfico de correlación para observar las po
 corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
 ```
 
+Del gráfico es posible observar que las variables más fuertemente correlacionadas con la calidad son la acidez volátil y el alcohol, para nuestro modelo esto es importante dado que la variable alcohol sera una de las predictoras en nuestro modelo.
+
 ## Variables indicadoras
 
 Se procede con la conversión de las variables "alcohol" en una variable indicadora de dos niveles: "Bajo" y "Alto" y de la variable "quality" como dicotómica con sus niveles: "0" y "1", estas nuevas variables se denominan "alcoholAB" y "calidadAB" respectivamente. Este procedimiento se realiza de la siguiente forma:
@@ -130,8 +132,6 @@ G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
   scale_fill_discrete(name = "Calidad:") + scale_fill_brewer(palette="Set1") +
   theme(legend.position="bottom")
 ```
-
-
 
 ```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
 grid.arrange(G2,G3, ncol= 2)
