@@ -73,20 +73,23 @@ Este conjunto de datos de vino tinto consta de 1599 observaciones y 12 variables
 Datos <- read.table("Datos.txt",header=T,sep = ",")
 ```
 
-Se selecciona un tamaño de muestra de 1200 vinos para realizar el modelo, tal y como se muestra a continuación: 
+Se selecciona un tamaño de muestra de 1200 vinos  y se guardan en una nueva variable llamada "muestra" con la cual se realizara el modelo, tal y como se muestra a continuación: 
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
 #Tamaño de la muestra
 n <- 1200
 ```
 
+```{r warning=FALSE, include=T, paged.print=TRUE}
+#Selección de la muestra
+set.seed(917)
+muestra <- Datos %>% sample_n(size=n,replace=FALSE)
+```
 
 ```{r warning=FALSE, include=F, paged.print=TRUE}
-#Selección de la muestra
-set.seed(123456)
-muestra <- Datos %>% sample_n(size=n,replace=FALSE)
 muestra
 ```
+
 
 Como primera medida, se realiza un gráfico de correlación para observar las posibles relaciones existentes entre las variables de la base de datos, tal y como se muestra a continuación:
 
@@ -94,7 +97,7 @@ Como primera medida, se realiza un gráfico de correlación para observar las po
 corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
 ```
 
-Del gráfico es posible observar que las variables más fuertemente correlacionadas con la calidad son la acidez volátil y el alcohol, para nuestro modelo esto es importante dado que la variable alcohol sera una de las predictoras en nuestro modelo.
+Del gráfico es posible observar que las variables más fuertemente correlacionadas con la calidad son la acidez volátil y el alcohol, para nuestro modelo esto es importante dado que la variable alcohol sera una de las variables predictoras en el modelo.
 
 ## Variables indicadoras
 
@@ -106,6 +109,10 @@ alcoholAB <- vector()
 alcoholAB[muestra$alcohol < 12] <- "Bajo"
 alcoholAB[muestra$alcohol >= 12] <- "Alto"
 alcoholAB <- as.factor(alcoholAB)
+```
+
+```{r warning=FALSE, include=T, paged.print=TRUE}
+# Tabla 1
 table(alcoholAB)
 ```
 
@@ -115,45 +122,55 @@ calidadAB <- vector()
 calidadAB[muestra$quality <= 6] <- "0"
 calidadAB[muestra$quality > 6] <- "1"
 calidadAB <- as.factor(calidadAB)
+```
+
+```{r warning=FALSE, include=T, paged.print=TRUE}
+# Tabla 2
 table(calidadAB)
-
 ```
 
-```{r}
-G2 <- ggplot(data = muestra, aes(x=alcoholAB, fill=alcoholAB)) +
-  geom_bar(position="dodge") + ylab("") + xlab(" ") +
-  scale_fill_discrete(name = "alcohol:") + scale_fill_brewer(palette="Dark2") +
-  theme(legend.position="bottom")
+
+A partir de las tablas 1 y 2 presentandas anteriormente, se observa como en la base de datos vinos se encuentra una mayor concentración en alcoholes de categoría "bajo", esto es vinos con un nivel de alcohol inferior a 12 y resultados de calidad inferior a 6 esto es aquellos codificados con "0".
+
+Tras realizar la nueva codificación de las variables es posible observar su comportamiento mediante un par de graficos boxplot como se muestra a continuación:
+
+```{r, include=F}
+G2 <- ggplot(muestra, aes(x=alcoholAB, y=fixed.acidity, fill=alcoholAB)) + geom_boxplot(show.legend = T) +
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank(),axis.ticks.x=element_blank()) +
+  theme(legend.position="bottom") + scale_fill_brewer(palette="Dark2") + ylab("Acidez fija")
 ```
 
-```{r}
-G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
-  geom_bar(position="dodge") + ylab("") + xlab(" ") +
-  scale_fill_discrete(name = "Calidad:") + scale_fill_brewer(palette="Set1") +
-  theme(legend.position="bottom")
+```{r, include=F}
+G3 <- ggplot(muestra, aes(x=calidadAB, y=fixed.acidity, fill=calidadAB)) + geom_boxplot(show.legend = T) +
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank(),axis.ticks.x=element_blank()) +
+  theme(legend.position="bottom") + scale_fill_brewer(palette="Dark2") + ylab("Acidez fija")
 ```
 
 ```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
 grid.arrange(G2,G3, ncol= 2)
 ```
-A partir de los graficos anteriores se observa como en la base de datos vinos se encuentra una mayor concentración en alcoholes bajos, esto es vinos con un nivel de alcohol inferior a 12 y resultados de calidad inferior a 6.
+La figura anterior nos presenta el comportamiento de las nuevas variables vs. la acidez fija, por lo cual, es posible observar como se presenta una mayor variabilidad para los alcoholes de nivel "alto", al igual que para calidad en la categoría definida como "1" es decir aquellas que son mayores a 6. 
 
 ## Modelo con variable indicadora y dicotómica
 
 En esta sección, se procede a generar un modelo logístico con variable de respuesta ordinal (CalidadAB), ya que la variable de respuesta "calidadAB" ha sido dicotomisada, esto es, una puntuación entre 0 y 1, donde 0 representa una mala calidad y 1 una buena calidad del vino.
 
+Se hace uso de la función "glm" y de la interacción entre las variables predictoras "fixed.acidity" y "alcoholAB"
+
 ```{r warning=FALSE, include=T, paged.print=T}
-modelo.logit <- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
+modelo <- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, 
+                    data = muestra, 
+                    family = "binomial")
 ```
 
 ```{r warning=FALSE, include=T, paged.print=F}
-summary(modelo.logit)
+summary(modelo)
 ```
 
-De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas, esto es valores-p de <3.05e-06 y 0.0327 respectivamente.
+De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas, esto es valores-p de <4.81e-06 y 0.0428 respectivamente.
 
-En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija (0.1029), está positivamente relacionada con el logaritmo del odds ratio de la CalidadAB, la cual aumentaría la calidad en 0.1029 unidades por cada unidad que aumenta la puntuación en el acidez fija.
+En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija (0.08729), está positivamente relacionada con el logaritmo del odds ratio de la CalidadAB, la cual aumentaría la calidad en 0.08729 unidades por cada unidad que aumenta la puntuación en el acidez fija. Por su parte, la variable alcoholAB-Bajo presenta un coeficiente de -4.06418, lo cual presentaría una reducción en la calidad del vino en -4.06418.
 
-
+Finalmente podemos concluir que para este modelo planteado las variables predictoras son influyentes en la calidad del vino. 
 
 

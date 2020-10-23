@@ -3,6 +3,7 @@ title: 'Parcial 1: Modelos lineales generalizados y no paramétricos'
 author: "Angie Rodríguez Duque"
 date: "Octubre 23 de 2020"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -138,7 +139,7 @@ alcoholAB <- as.factor(alcoholAB)
 table(alcoholAB)
 ```
 
-```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+```{r fig.align="center", fig.height=4, fig.width=5, warning=FALSE, include=T}
 G2 <- ggplot(data = muestra, aes(x=alcoholAB, fill=alcoholAB)) +
   geom_bar(position="dodge") + ylab("") + xlab(" ") +
   scale_fill_discrete(name = "alcohol:") + scale_fill_brewer(palette="Dark2") +
@@ -160,7 +161,7 @@ table(calidadAB)
 
 ```
 
-```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+```{r fig.align="center", fig.height=4, fig.width=5, warning=FALSE, include=T}
 G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
   geom_bar(position="dodge") + ylab("") + xlab(" ") +
   scale_fill_discrete(name = "Calidad:") + scale_fill_brewer(palette="Set1") +
@@ -169,7 +170,7 @@ G3
 ```
 # Modelo logístico con variable indicadora
 
-Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, se ajusta un modelo lineal generalizado usando como respuesta la variable calidadAB y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB". Además, como la variable de respuesta "calidadAB"es una variable dicotómica especificamos el argumento family = binomial.
+Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, se ajusta un modelo lineal generalizado usando como respuesta la variable calidadAB y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB". Además, como la variable de respuesta "calidadAB" es una variable dicotómica especificamos el argumento family = binomial.
 
 ```{r warning=FALSE, include=T, paged.print=T}
 Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
