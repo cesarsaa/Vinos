@@ -178,3 +178,5 @@ ggplot(muestra, aes(x=alcoholAB, y=fixed.acidity, fill=calidadAB)) + geom_boxplo
 ggplot(muestra, aes(x=alcohol, y=fixed.acidity, fill=calidadAB)) + geom_point(show.legend = T) + 
   labs(color = "",fill = " ") + xlab("") + ylab("Acidez fija")
 
+ggplot(muestra, aes(x=alcohol, y=fixed.acidity, color=calidadAB)) + geom_point(show.legend = T) + 
+  labs(color = "alcoholAB",fill = " ") + xlab("alcohol") + ylab("Acidez fija")
