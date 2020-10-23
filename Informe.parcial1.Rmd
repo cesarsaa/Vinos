@@ -88,6 +88,7 @@ muestra <- Datos %>% sample_n(size=n,replace=FALSE)
 muestra
 ```
 
+Como primera medida, se realiza un gráfico de correlación para observar las posibles relaciones existentes entre las variables de la base de datos, tal y como se muestra a continuación:
 
 ```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
 corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
@@ -95,7 +96,7 @@ corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="bl
 
 ## Variables indicadoras
 
-Se convierten las variables "alcohol" en una variable indicadora con dos niveles: "Bajo" y "Alto" y la variable "quality" como dicotómica con sus niveles en "0" y "1", estas nuevas variables se denominan "alcoholAB" y "calidadAB" respectivamente. Se realiza el siguiente procedimiento:
+Se procede con la conversión de las variables "alcohol" en una variable indicadora de dos niveles: "Bajo" y "Alto" y de la variable "quality" como dicotómica con sus niveles: "0" y "1", estas nuevas variables se denominan "alcoholAB" y "calidadAB" respectivamente. Este procedimiento se realiza de la siguiente forma:
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
 # Variable indicadora alcoholAB
@@ -116,15 +117,37 @@ table(calidadAB)
 
 ```
 
+```{r}
+G2 <- ggplot(data = muestra, aes(x=alcoholAB, fill=alcoholAB)) +
+  geom_bar(position="dodge") + ylab("") + xlab(" ") +
+  scale_fill_discrete(name = "alcohol:")
+```
+
+```{r}
+G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
+  geom_bar(position="dodge") + ylab("") + xlab(" ") +
+  scale_fill_discrete(name = "Calidad:")
+```
+
+
+
+```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+grid.arrange(G2,G3, ncol= 2)
+```
+
 ## Modelo con variable indicadora y dicotómica
 
 En esta sección, se procede a generar un modelo logístico con variable de respuesta ordinal (CalidadAB), ya que la variable de respuesta "calidadAB" ha sido dicotomisada, esto es, una puntuación entre 0 y 1, donde 0 representa una mala calidad y 1 una buena calidad del vino.
 
 ```{r warning=FALSE, include=T, paged.print=T}
-modelo.logit <- glm(calidadAB ~ fixed.acidity + alcoholAB, data = muestra, family = "binomial")
+modelo.logit <- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
 ```
 
 ```{r warning=FALSE, include=T, paged.print=F}
 summary(modelo.logit)
 ```
+
+De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas, esto es valores-p de <3.05e-06 y 0.0327 respectivamente.
+
+En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija (0.1029), está positivamente relacionada con el logaritmo del odds ratio de la CalidadAB, la cual aumentaría la calidad en 0.1029 unidades por cada unidad que aumenta la puntuación en el acidez fija.
 
