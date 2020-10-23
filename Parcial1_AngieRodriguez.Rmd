@@ -173,7 +173,8 @@ G3
 Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, se ajusta un modelo lineal generalizado usando como respuesta la variable calidadAB y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB". Además, como la variable de respuesta "calidadAB" es una variable dicotómica especificamos el argumento family = binomial.
 
 ```{r warning=FALSE, include=T, paged.print=T}
-Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
+Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, 
+             data = muestra, family = "binomial")
 ```
 
 ```{r warning=FALSE, include=T, paged.print=F}
