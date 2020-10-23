@@ -97,6 +97,10 @@ summary(Datos)
 
 ### Correlación
 
+```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
+```
+
 * La densidad tiene una correlación muy fuerte con la acidez fija.
 
 * Las variables más fuertemente correlacionadas con la calidad son la acidez volátil y el alcohol.
@@ -105,18 +109,7 @@ summary(Datos)
 
 * Es posible observar que las variables pH y acidez fija presentan una correlación negativamente fuerte, lo cual nos indica que a mayor pH menor será la acidez, y viceversa, a menor pH mayor acidez. Lo cual se ve reflejado en la calidad final del vino.
 
-### Variable indicadora: alcoholAB
-
-Se convierte la variable "alcohol" en una variable indicadora con dos niveles: "bajo" y "alto", esta nueva variable se denomina: "alcoholAB". Para dicha transformación se realiza el siguiente procedimiento:
-
-
-
-## Base de datos vinos
-
-```{r warning=FALSE, include=T, paged.print=TRUE}
-Datos <- read.table("Datos.txt",header=T,sep = ",")
-```
-
+# Muestra
 Se elige una muestra de mil doscientos $(1200)$ vinos de esta base de datos y trabaje, tal como sigue:
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
@@ -132,13 +125,14 @@ muestra
 ```
 
 
-```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
-corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
-```
+### Variable indicadora: alcoholAB
 
-## Variables indicadoras
+Se convierte la variable "alcohol" en una variable indicadora con dos niveles: "bajo" y "alto", esta nueva variable se denomina: "alcoholAB". Para dicha transformación se realiza el siguiente procedimiento:
 
-Se convierten las variables "alcohol" en una variable indicadora con dos niveles: "Bajo" y "Alto" y la variable "quality" como dicotómica con sus niveles en "0" y "1", estas nuevas variables se denominan "alcoholAB" y "calidadAB" respectivamente. Se realiza el siguiente procedimiento:
+
+## Variables dicotomica: calidadAB
+
+Se convierte la variable calidad (quality) en una variable dicotómica y se denomina "calidadAB". Se forma un grupo con los vinos que tienen calidades 7 y 8 y otro con los demás vinos.
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
 # Variable indicadora alcoholAB
