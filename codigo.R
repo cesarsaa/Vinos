@@ -180,3 +180,13 @@ ggplot(muestra, aes(x=alcohol, y=fixed.acidity, fill=calidadAB)) + geom_point(sh
 
 ggplot(muestra, aes(x=alcohol, y=fixed.acidity, color=calidadAB)) + geom_point(show.legend = T) + 
   labs(color = "alcoholAB",fill = " ") + xlab("alcohol") + ylab("Acidez fija")
+
+
+ggplot(muestra, aes(x=alcoholAB, y=fixed.acidity, fill=alcoholAB)) + geom_boxplot(show.legend = T) +
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank(),axis.ticks.x=element_blank()) +
+  theme(legend.position="bottom") + scale_fill_brewer(palette="Dark2") + ylab("Acidez fija")
+  
+ggplot(muestra, aes(x=calidadAB, y=fixed.acidity, fill=calidadAB)) + geom_boxplot(show.legend = T) +
+  theme(axis.title.x=element_blank(), axis.text.x=element_blank(),axis.ticks.x=element_blank()) +
+  theme(legend.position="bottom") + scale_fill_brewer(palette="Dark2") + ylab("Acidez fija")
+
