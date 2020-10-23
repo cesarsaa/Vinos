@@ -88,6 +88,11 @@ muestra <- Datos %>% sample_n(size=n,replace=FALSE)
 muestra
 ```
 
+
+```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
+```
+
 ## Variables indicadoras
 
 Se convierten las variables "alcohol" en una variable indicadora con dos niveles: "Bajo" y "Alto" y la variable "quality" como dicotómica con sus niveles en "0" y "1", estas nuevas variables se denominan "alcoholAB" y "calidadAB" respectivamente. Se realiza el siguiente procedimiento:
