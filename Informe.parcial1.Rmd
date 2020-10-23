@@ -120,13 +120,15 @@ table(calidadAB)
 ```{r}
 G2 <- ggplot(data = muestra, aes(x=alcoholAB, fill=alcoholAB)) +
   geom_bar(position="dodge") + ylab("") + xlab(" ") +
-  scale_fill_discrete(name = "alcohol:")
+  scale_fill_discrete(name = "alcohol:") + scale_fill_brewer(palette="Dark2") +
+  theme(legend.position="bottom")
 ```
 
 ```{r}
 G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
   geom_bar(position="dodge") + ylab("") + xlab(" ") +
-  scale_fill_discrete(name = "Calidad:")
+  scale_fill_discrete(name = "Calidad:") + scale_fill_brewer(palette="Set1") +
+  theme(legend.position="bottom")
 ```
 
 

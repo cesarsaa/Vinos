@@ -3,6 +3,7 @@ title: 'Parcial 1: Modelos lineales generalizados y no paramétricos'
 author: "Angie Rodríguez Duque"
 date: "Octubre 23 de 2020"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -98,7 +99,7 @@ summary(Datos)
 ### Correlación
 
 ```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
-corrplot(cor(muestra), method="square", type="upper", order="hclust", tl.col="black")
+corrplot(cor(Datos), method="square", type="upper", order="hclust", tl.col="black")
 ```
 
 * La densidad tiene una correlación muy fuerte con la acidez fija.
