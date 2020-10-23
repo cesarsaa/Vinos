@@ -120,6 +120,7 @@ n <- 1200
 ```{r warning=FALSE, include=F, paged.print=TRUE}
 #Selección de la muestra
 set.seed(123)
+library(dplyr)
 muestra <- Datos %>% sample_n(size=n,replace=FALSE)
 muestra
 ```
@@ -137,6 +138,14 @@ alcoholAB <- as.factor(alcoholAB)
 table(alcoholAB)
 ```
 
+```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+G2 <- ggplot(data = muestra, aes(x=alcoholAB, fill=alcoholAB)) +
+  geom_bar(position="dodge") + ylab("") + xlab(" ") +
+  scale_fill_discrete(name = "alcohol:") + scale_fill_brewer(palette="Dark2") +
+  theme(legend.position="bottom")
+G2
+```
+
 ## Variables dicotomica: calidadAB
 
 Se convierte la variable "calidad" (quality) en una variable dicotómica y se denomina "calidadAB". Se forma un grupo con los vinos que tienen calidades 7 y 8 y otro con los demás vinos.
@@ -151,11 +160,16 @@ table(calidadAB)
 
 ```
 
+```{r fig.align="center", fig.height=4, fig.width=10, warning=FALSE, include=T}
+G3 <- ggplot(data = muestra, aes(x=calidadAB, fill=calidadAB)) +
+  geom_bar(position="dodge") + ylab("") + xlab(" ") +
+  scale_fill_discrete(name = "Calidad:") + scale_fill_brewer(palette="Set1") +
+  theme(legend.position="bottom")
+G3
+```
 # Modelo logístico con variable indicadora
 
 Para ajustar este modelo se hace uso de la función glm() para modelos lineales generalizados, una clase de modelos en los que se incluye el modelo logístico. En nuestro caso, se ajusta un modelo lineal generalizado usando como respuesta la variable calidadAB y como variables de predicción las variables "acidez fja" (fixed acidity) y "alcoholAB". Además, como la variable de respuesta "calidadAB"es una variable dicotómica especificamos el argumento family = binomial.
-
-$$calidadAB= Acidez fija+AlcoholAB +Acidez fija*AlcoholAB$$
 
 ```{r warning=FALSE, include=T, paged.print=T}
 Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
@@ -165,9 +179,14 @@ Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, da
 summary(Modelo)
 ```
 
-De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables statusquo y sexo son altamente significativas (<2e-16 y 0.000277).
 
-En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable statusquo (3.2085), está positivamente relacionada con el logaritmo del odds ratio de la intención de voto, el cual aumentaría 3.2085 unidades por cada unidad que aumenta la puntuación en el statusquo.
+El modelo obtenido es el siguiente:
+
+$$calidadAB= -0.23257+ 0.01305*Acidez fija+-3.88183*AlcoholAB Bajo +0.22169*Acidez fija*AlcoholABBajo$$
+
+A partir de los anteriores resultados y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Es posible evidenciar que la variable alcoholAB-Bajo es altamente significativa $(2.7e-06)$. De igual forma, la interacción entre ambas varias explicativas acidez fija y alcoholABBajo es significativa $(0.0232)$
+
+Respecto a la interpretación de los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. Así, si nos fijamos en el coeficiente de la variable acidez fija (0.01305), está positivamente relacionada con el logaritmo del odds ratio de la calidadAB del vino, la cual aumentaría 0.01305 unidades por cada unidad que aumenta la acidez fija. Por otro lado, la variable alcoholABBajo se encuentra negativamente relacionada con el logaritmo del odds ratio de la calidadAB del vino, el cual disminuiría -3.88183 unidades por cada unidad que aumenta el alcoholABBajo.
 
 
 # Bibliografía
