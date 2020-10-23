@@ -117,7 +117,7 @@ table(alcoholAB)
 ```
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
-# Variable indicadora quality
+# Variable dicotomica calidadAB
 calidadAB <- vector()
 calidadAB[muestra$quality <= 6] <- "0"
 calidadAB[muestra$quality > 6] <- "1"
@@ -167,9 +167,9 @@ modelo <- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB,
 summary(modelo)
 ```
 
-De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas, esto es valores-p de <4.81e-06 y 0.0428 respectivamente.
+De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables alcoholABBajo y la interacción entre las variables predictoras son significativas lo cual permite ajustar un mejor modelo, esto es valor-p de <4.81e-06 y 0.0428 respectivamente.
 
-En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija (0.08729), está positivamente relacionada con el logaritmo del odds ratio de la CalidadAB, la cual aumentaría la calidad en 0.08729 unidades por cada unidad que aumenta la puntuación en el acidez fija. Por su parte, la variable alcoholAB-Bajo presenta un coeficiente de -4.06418, lo cual presentaría una reducción en la calidad del vino en -4.06418.
+En cuanto a los coeficientes del modelo logit, estos se interpretan como el logaritmo del odds ratio. De esta manera, si nos fijamos en el coeficiente de la variable acidez fija, está positivamente relacionada la CalidadAB, la cual incrementaría la calidad en 0.08729 unidades por cada unidad que aumenta la puntuación en la acidez fija. Por su parte, la variable alcoholAB-Bajo presenta un coeficiente de -4.06418, lo cual presentaría una reducción en la calidad del vino en -4.06418.
 
 Finalmente podemos concluir que para este modelo planteado las variables predictoras son influyentes en la calidad del vino. 
 

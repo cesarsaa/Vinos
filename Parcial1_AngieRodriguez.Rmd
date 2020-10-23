@@ -152,7 +152,7 @@ G2
 Se convierte la variable "calidad" (quality) en una variable dicotómica y se denomina "calidadAB". Se forma un grupo con los vinos que tienen calidades 7 y 8 y otro con los demás vinos.
 
 ```{r warning=FALSE, include=T, paged.print=TRUE}
-# Variable indicadora quality
+# Variable dicotómica quality
 calidadAB <- vector()
 calidadAB[muestra$quality <= 6] <- "0"
 calidadAB[muestra$quality > 6] <- "1"
