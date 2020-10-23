@@ -167,4 +167,14 @@ library(VGAM)
 fit = vglm(quality ~ fixed.acidity + pHi, data = Datos, family = cumulative(parallel = TRUE))
 summary(fit)
 
+modelo.logit <- glm(calidadAB ~ fixed.acidity + alcoholAB, 
+                    data = muestra, family = "binomial")
+summary(modelo.logit)
+
+ggplot(muestra, aes(x=alcoholAB, y=fixed.acidity, fill=calidadAB)) + geom_boxplot(show.legend = T) + 
+  labs(color = "quality",fill = " ") + scale_fill_discrete(name = "CalidadAB:") + 
+  xlab("AlcoholAB") + ylab("Acidez fija")
+
+ggplot(muestra, aes(x=alcohol, y=fixed.acidity, fill=calidadAB)) + geom_point(show.legend = T) + 
+  labs(color = "",fill = " ") + xlab("") + ylab("Acidez fija")
 
