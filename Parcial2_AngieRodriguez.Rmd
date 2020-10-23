@@ -3,7 +3,6 @@ title: 'Parcial 1: Modelos lineales generalizados y no paramétricos'
 author: "Angie Rodríguez Duque"
 date: "Octubre 23 de 2020"
 output:
-  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -164,11 +163,11 @@ y como variables de predicción las variables "acidez fja" (fixed acidity) y "al
 $$calidadAB= Acidez fija+AlcoholAB +Acidez fija*AlcoholAB$$
 
 ```{r warning=FALSE, include=T, paged.print=T}
-modelo.logit <- glm(calidadAB ~ fixed.acidity + alcoholAB, data = muestra, family = "binomial")
+Modelo<- glm(calidadAB ~ fixed.acidity + alcoholAB + fixed.acidity*alcoholAB, data = muestra, family = "binomial")
 ```
 
 ```{r warning=FALSE, include=T, paged.print=F}
-summary(modelo.logit)
+summary(Modelo)
 ```
 
 De acuerdo a los resultados obtenidos y teniendo en cuenta que la interpretación de los p-valores es similar a la del modelo lineal. Podemos ver que las variables statusquo y sexo son altamente significativas (<2e-16 y 0.000277).
